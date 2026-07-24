@@ -1,0 +1,39 @@
+name: Publish MerchantFlow source
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'payload/**'
+      - '.github/workflows/publish-source.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Verify and unpack source
+        shell: bash
+        run: |
+          set -euo pipefail
+          cat payload/* > /tmp/merchantflow-source.b64
+          echo "e5e7477e44a70d47af914e56e0e0ddcc6148d26ab852f8adc6d0824cff80c6fd  /tmp/merchantflow-source.b64" | sha256sum -c -
+          base64 --decode /tmp/merchantflow-source.b64 > /tmp/merchantflow-source.tar.gz
+          echo "83dd2a0504e4609e78ad3967c5d8c94316d88c9ad0570a22dbae4cab789822e7  /tmp/merchantflow-source.tar.gz" | sha256sum -c -
+          tar -xzf /tmp/merchantflow-source.tar.gz
+      - name: Commit extracted application
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            exit 0
+          fi
+          git commit -m "Publish MerchantFlow full-stack source"
+          git push origin HEAD:main
