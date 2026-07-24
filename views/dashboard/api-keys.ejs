@@ -1,0 +1,10 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Integrasi eksternal</p><h1>API Key</h1></div></div>
+<% if (newKey) { %><div class="new-key-banner"><strong>Simpan API key ini sekarang</strong><p>Key hanya ditampilkan sekali. Jangan masukkan ke source code publik.</p><div class="secret-box"><code><%= newKey %></code><button type="button" data-copy="<%= newKey %>">Salin</button></div></div><% } %>
+<div class="content-grid api-key-layout">
+  <section class="panel panel-wide"><div class="panel-heading"><div><h2>Key aktif</h2><p>Gunakan pada header <code>X-API-Key</code>.</p></div></div>
+    <% if (!keys.length) { %><div class="empty-state"><div>⌘</div><h3>Belum ada API key</h3><p>Buat satu key untuk menghubungkan bot atau website.</p></div><% } else { %><div class="key-list"><% keys.forEach(key => { %><div class="key-row"><div><strong><%= key.name %></strong><code><%= key.prefix %>••••••••••••</code><small>Dibuat <%= format.dateTime(key.createdAt) %> · Terakhir dipakai <%= key.lastUsedAt ? format.dateTime(key.lastUsedAt) : 'belum pernah' %></small></div><% if (!key.revokedAt) { %><form method="post" action="/dashboard/api-keys/<%= key._id %>/revoke" onsubmit="return confirm('Cabut API key ini?')"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="button button-danger button-small" type="submit">Cabut</button></form><% } else { %><span class="status status-failed">Dicabut</span><% } %></div><% }) %></div><% } %>
+  </section>
+  <aside class="panel quick-panel"><div class="panel-heading"><div><h2>Buat API key</h2><p>Gunakan nama yang mudah dikenali.</p></div></div><form method="post" action="/dashboard/api-keys" class="form-stack"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><label>Nama key<input type="text" name="name" required maxlength="60" placeholder="Bot Telegram Production"></label><button class="button button-block" type="submit">Generate API key</button></form></aside>
+</div>
+<%- include('../partials/dashboard-foot') %>

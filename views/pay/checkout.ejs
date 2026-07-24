@@ -1,0 +1,19 @@
+<%- include('../partials/head') %>
+<div class="checkout-shell">
+  <div class="checkout-top"><a class="brand" href="/"><span class="brand-mark">M</span><span><%= brandName %></span></a><span class="secure-badge">🔒 Pembayaran aman</span></div>
+  <main class="checkout-card" data-checkout data-public-id="<%= payment.publicId %>" data-status="<%= payment.status %>">
+    <div class="merchant-title"><div class="merchant-logo"><%= (checkoutMerchant?.businessName || 'M').slice(0,1).toUpperCase() %></div><div><small>Pembayaran kepada</small><strong><%= checkoutMerchant?.businessName || brandName %></strong></div></div>
+    <div class="checkout-amount"><small>Total pembayaran</small><strong><%= format.rupiah(payment.amount) %></strong><span><%= payment.orderId %> · <%= payment.description %></span></div>
+    <div class="checkout-status"><span class="status status-<%= payment.status %>" data-payment-status><%= format.statusLabel(payment.status) %></span><small data-status-text><%= payment.status === 'pending' ? `Bayar sebelum ${format.dateTime(payment.expiresAt)}` : '' %></small></div>
+    <div class="qr-box" data-qr-box>
+      <% if (payment.status === 'paid') { %><div class="success-illustration">✓</div><h2>Pembayaran berhasil</h2><p>Transaksi telah diterima.</p>
+      <% } else if (payment.qrUrl) { %><img src="<%= payment.qrUrl %>" alt="QR pembayaran"><p>Pindai QR menggunakan aplikasi GoPay.</p>
+      <% } else { %><div class="qr-empty">QR tidak tersedia</div><p>Gunakan tombol di bawah untuk melanjutkan pembayaran.</p><% } %>
+    </div>
+    <% if (payment.deeplinkUrl && payment.status === 'pending') { %><a class="button button-large button-block" href="<%= payment.deeplinkUrl %>">Buka aplikasi GoPay</a><% } %>
+    <button class="copy-button checkout-copy" type="button" data-copy="<%= appUrl %>/pay/<%= payment.publicId %>">Salin link pembayaran</button>
+    <div class="checkout-help"><span>ℹ</span><p>Jangan tutup halaman ini sampai status pembayaran berubah. Status diperbarui otomatis.</p></div>
+  </main>
+  <p class="checkout-footer">Diproses melalui akun merchant Midtrans · <%= brandName %> tidak menyimpan dana.</p>
+</div>
+</body></html>

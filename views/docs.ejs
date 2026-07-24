@@ -1,0 +1,43 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main class="docs-shell container">
+  <aside class="docs-nav"><strong>Dokumentasi</strong><a href="#auth">Autentikasi</a><a href="#create">Create payment</a><a href="#status">Cek status</a><a href="#sync">Sinkronisasi</a><a href="#callback">Callback</a></aside>
+  <article class="docs-content"><div class="eyebrow"><span></span> REST API v1</div><h1>Hubungkan bot atau website Anda</h1><p class="lead">API MerchantFlow menerima dan mengembalikan JSON. Semua request API merchant wajib menggunakan HTTPS pada production.</p>
+    <section id="auth"><h2>Autentikasi</h2><p>Kirim API key melalui header berikut.</p><pre><code>X-API-Key: mf_test_xxxxxxxxxxxxxxxxx
+Content-Type: application/json</code></pre></section>
+    <section id="create"><div class="endpoint"><b class="method post">POST</b><code>/api/v1/payments</code></div><h2>Create payment</h2><pre><code>curl -X POST "<%= appUrl %>/api/v1/payments" \\
+  -H "X-API-Key: mf_test_xxx" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "order_id": "INV-1001",
+    "amount": 50000,
+    "description": "Paket VPS",
+    "customer": {
+      "name": "Budi",
+      "email": "budi@example.com",
+      "phone": "08123456789"
+    },
+    "callback_url": "https://merchant.example/webhook"
+  }'</code></pre><h3>Response 201</h3><pre><code>{
+  "success": true,
+  "data": {
+    "order_id": "INV-1001",
+    "status": "pending",
+    "amount": 50000,
+    "qr_url": "https://...",
+    "deeplink_url": "https://...",
+    "checkout_url": "<%= appUrl %>/pay/pay_xxx",
+    "expires_at": "2026-07-24T15:00:00.000Z"
+  }
+}</code></pre></section>
+    <section id="status"><div class="endpoint"><b class="method get">GET</b><code>/api/v1/payments/:orderId</code></div><h2>Cek status lokal</h2><p>Mengambil status terakhir yang tersimpan di database.</p></section>
+    <section id="sync"><div class="endpoint"><b class="method post">POST</b><code>/api/v1/payments/:orderId/sync</code></div><h2>Sinkronisasi</h2><p>Meminta status terbaru ke Midtrans dan memperbarui database.</p></section>
+    <section id="callback"><h2>Callback pembayaran</h2><p>MerchantFlow mengirim POST JSON ketika status berubah. Verifikasi body mentah menggunakan HMAC SHA-256 dan webhook secret Anda.</p><pre><code>X-MerchantFlow-Event: payment.paid
+X-MerchantFlow-Delivery: uuid
+X-MerchantFlow-Signature: sha256=hex_signature</code></pre><pre><code>const expected = crypto
+  .createHmac('sha256', WEBHOOK_SECRET)
+  .update(rawBody)
+  .digest('hex');</code></pre></section>
+  </article>
+</main>
+<%- include('partials/footer') %>

@@ -1,0 +1,17 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Konfigurasi</p><h1>Integrasi merchant</h1></div><span class="status <%= merchant.isConfigured ? 'status-paid' : 'status-pending' %>"><%= merchant.isConfigured ? 'Terhubung' : 'Belum lengkap' %></span></div>
+<% if (saved) { %><div class="alert alert-success">Pengaturan berhasil disimpan.</div><% } %>
+<% if (welcome) { %><div class="setup-banner"><div><strong>Akun berhasil dibuat</strong><p>Masukkan credential Midtrans Sandbox untuk membuat transaksi percobaan.</p></div></div><% } %>
+<div class="form-layout">
+  <section class="panel form-panel">
+    <form method="post" action="/dashboard/integration" class="form-stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-section"><h2>Profil bisnis</h2><div class="form-grid"><label>Nama bisnis<input type="text" name="businessName" value="<%= merchant.businessName || '' %>" maxlength="100"></label><label>No. HP<input type="text" name="phone" value="<%= merchant.phone || '' %>" maxlength="30"></label></div></div>
+      <div class="form-section"><h2>Credential Midtrans</h2><label>Environment<select name="midtransEnvironment"><option value="sandbox" <%= merchant.midtransEnvironment === 'sandbox' ? 'selected' : '' %>>Sandbox</option><option value="production" <%= merchant.midtransEnvironment === 'production' ? 'selected' : '' %>>Production</option></select></label><div class="form-grid"><label>Server Key<input type="password" name="serverKey" autocomplete="off" placeholder="<%= merchant.midtransServerKeyEncrypted ? 'Tersimpan — isi untuk mengganti' : 'SB-Mid-server-...' %>"><small>Disimpan dalam bentuk terenkripsi.</small></label><label>Client Key<input type="password" name="clientKey" autocomplete="off" placeholder="<%= clientKeyMasked || 'SB-Mid-client-...' %>"><small>Opsional untuk pengembangan frontend lanjutan.</small></label></div></div>
+      <div class="form-section"><h2>Otomasi</h2><label>Callback URL default<input type="url" name="defaultCallbackUrl" value="<%= merchant.defaultCallbackUrl || '' %>" placeholder="https://bot-anda.com/payment-callback"></label><label>Masa berlaku invoice (menit)<input type="number" name="invoiceExpiryMinutes" value="<%= merchant.invoiceExpiryMinutes %>" min="5" max="10080"></label></div>
+      <button class="button button-large" type="submit">Simpan pengaturan</button>
+    </form>
+  </section>
+  <aside class="panel info-panel"><h3>Webhook Midtrans</h3><p>URL ini dipasang otomatis per transaksi melalui header override:</p><code class="code-box"><%= webhookUrl %></code><h3>Webhook secret Anda</h3><p>Gunakan secret ini untuk memverifikasi callback dari MerchantFlow:</p><div class="secret-box"><code><%= merchant.webhookSecret %></code><button type="button" data-copy="<%= merchant.webhookSecret %>">Salin</button></div><p class="muted">Jangan bagikan Server Key, API key, atau webhook secret ke pihak lain.</p></aside>
+</div>
+<%- include('../partials/dashboard-foot') %>

@@ -1,0 +1,17 @@
+<%- include('../partials/head') %>
+<div class="auth-shell">
+  <a class="brand auth-brand" href="/"><span class="brand-mark">M</span><span><%= brandName %></span></a>
+  <div class="auth-card">
+    <div class="auth-heading"><span class="auth-icon">→</span><h1>Selamat datang</h1><p>Masuk untuk mengelola pembayaran merchant Anda.</p></div>
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <form method="post" action="/login" class="form-stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <input type="hidden" name="next" value="<%= next %>">
+      <label>Email<input type="email" name="email" autocomplete="email" required placeholder="nama@email.com"></label>
+      <label>Kata sandi<input type="password" name="password" autocomplete="current-password" required placeholder="Minimal 8 karakter"></label>
+      <button class="button button-block button-large" type="submit">Masuk ke dashboard</button>
+    </form>
+    <p class="auth-switch">Belum punya akun? <a href="/register">Daftar sekarang</a></p>
+  </div>
+</div>
+</body></html>

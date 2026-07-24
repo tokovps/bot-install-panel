@@ -1,0 +1,54 @@
+<%- include('partials/head') %>
+<%- include('partials/header') %>
+<main>
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="eyebrow"><span></span> Otomasi khusus pembayaran GoPay</div>
+        <h1>Terima pembayaran otomatis. <em>Dana tetap milik merchant.</em></h1>
+        <p class="hero-copy">Buat invoice, tampilkan QR atau deeplink, verifikasi webhook, dan hubungkan transaksi ke bot atau website Anda dari satu dashboard.</p>
+        <div class="hero-actions">
+          <a class="button button-large" href="/register">Buat akun gratis</a>
+          <a class="button button-large button-ghost" href="/docs">Lihat API</a>
+        </div>
+        <div class="trust-row"><span>✓ Midtrans Core API</span><span>✓ MongoDB</span><span>✓ Webhook HMAC</span></div>
+      </div>
+      <div class="hero-card-wrap">
+        <div class="glow"></div>
+        <div class="payment-preview">
+          <div class="preview-header"><span class="brand-mark">M</span><div><small>Invoice</small><strong>INV-VPS-2407</strong></div><span class="status status-pending">Menunggu</span></div>
+          <div class="qr-placeholder"><div class="qr-grid"><% for(let i=0;i<81;i++){ %><i class="<%= [0,1,2,9,10,11,18,19,20,6,7,8,15,16,17,24,25,26,54,55,56,63,64,65,72,73,74,12,22,30,31,32,40,48,50,58,60,67,68,70].includes(i) ? 'on' : '' %>"></i><% } %></div></div>
+          <small>Total pembayaran</small><strong class="preview-amount">Rp50.000</strong>
+          <button class="button button-block">Buka aplikasi GoPay</button>
+          <div class="preview-footer"><span>Webhook aktif</span><span class="live-dot">● live</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section id="features" class="section">
+    <div class="container">
+      <div class="section-heading"><div class="eyebrow"><span></span> Semua yang dibutuhkan</div><h2>Satu sistem untuk seluruh alur pembayaran</h2><p>Dirancang agar mudah dipakai dari HP, namun tetap lengkap untuk integrasi teknis.</p></div>
+      <div class="feature-grid">
+        <article class="feature-card"><div class="feature-icon">▦</div><h3>Invoice otomatis</h3><p>Buat transaksi lewat dashboard atau REST API dengan order ID Anda sendiri.</p></article>
+        <article class="feature-card"><div class="feature-icon">⌁</div><h3>QR dan deeplink</h3><p>Pengguna desktop memperoleh QR, pengguna HP dapat langsung membuka aplikasi.</p></article>
+        <article class="feature-card"><div class="feature-icon">✓</div><h3>Webhook terverifikasi</h3><p>Signature Midtrans diperiksa sebelum status transaksi diubah.</p></article>
+        <article class="feature-card"><div class="feature-icon">↗</div><h3>Callback ke sistem Anda</h3><p>Kirim event pembayaran ke bot, toko, atau panel dengan signature HMAC.</p></article>
+        <article class="feature-card"><div class="feature-icon">⌘</div><h3>API key terpisah</h3><p>Buat dan cabut API key kapan saja tanpa membagikan credential Midtrans.</p></article>
+        <article class="feature-card"><div class="feature-icon">◉</div><h3>Sandbox dan production</h3><p>Uji alur lengkap lebih dulu, lalu pindah environment dari dashboard.</p></article>
+      </div>
+    </div>
+  </section>
+  <section class="section section-dark">
+    <div class="container flow-grid">
+      <div><div class="eyebrow"><span></span> Alur transparan</div><h2>Aplikasi hanya menjadi perantara otomasi</h2><p>Kredensial merchant dienkripsi. Charge dibuat atas akun Midtrans merchant, kemudian status diterima melalui webhook resmi.</p></div>
+      <div class="flow-list">
+        <div><b>1</b><span><strong>Buat order</strong><small>Dashboard, bot, atau API</small></span></div>
+        <div><b>2</b><span><strong>Pelanggan membayar</strong><small>QR atau deeplink GoPay</small></span></div>
+        <div><b>3</b><span><strong>Status terverifikasi</strong><small>Signature dan idempotensi</small></span></div>
+        <div><b>4</b><span><strong>Callback dikirim</strong><small>Sistem Anda otomatis memproses order</small></span></div>
+      </div>
+    </div>
+  </section>
+  <section class="cta-section"><div class="container cta-card"><div><h2>Siap mengotomatiskan pembayaran?</h2><p>Mulai dari sandbox dan hubungkan sistem Anda saat sudah siap.</p></div><a class="button button-large button-light" href="/register">Buat akun</a></div></section>
+</main>
+<%- include('partials/footer') %>

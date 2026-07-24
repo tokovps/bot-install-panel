@@ -1,0 +1,25 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Halo, <%= user.name.split(' ')[0] %> 👋</p><h1>Ringkasan pembayaran</h1></div><a class="button" href="/dashboard/payments/new">＋ Buat pembayaran</a></div>
+<% if (!merchant.isConfigured) { %><div class="setup-banner"><div><strong>Lengkapi integrasi Midtrans</strong><p>Masukkan Server Key dan Client Key sebelum membuat pembayaran.</p></div><a class="button button-light" href="/dashboard/integration">Atur sekarang</a></div><% } %>
+<div class="stats-grid">
+  <div class="stat-card"><span>Total transaksi</span><strong><%= summary.total %></strong><small>Semua status</small></div>
+  <div class="stat-card"><span>Transaksi berhasil</span><strong><%= summary.paidCount %></strong><small>Sudah dibayar</small></div>
+  <div class="stat-card"><span>Menunggu pembayaran</span><strong><%= summary.pendingCount %></strong><small>Belum selesai</small></div>
+  <div class="stat-card stat-highlight"><span>Volume berhasil</span><strong><%= format.rupiah(summary.paidAmount) %></strong><small>Dana diproses merchant</small></div>
+</div>
+<div class="content-grid">
+  <section class="panel panel-wide">
+    <div class="panel-heading"><div><h2>Transaksi terbaru</h2><p>Pembaruan terkini dari seluruh invoice.</p></div><a href="/dashboard/transactions">Lihat semua</a></div>
+    <% if (!recent.length) { %><div class="empty-state"><div>↔</div><h3>Belum ada transaksi</h3><p>Buat pembayaran pertama Anda dari dashboard atau API.</p></div><% } else { %>
+    <div class="table-wrap"><table><thead><tr><th>Order</th><th>Nominal</th><th>Status</th><th>Waktu</th><th></th></tr></thead><tbody>
+      <% recent.forEach(payment => { %><tr><td><strong><%= payment.orderId %></strong><small><%= payment.description %></small></td><td><%= format.rupiah(payment.amount) %></td><td><span class="status status-<%= payment.status %>"><%= format.statusLabel(payment.status) %></span></td><td><%= format.dateTime(payment.createdAt) %></td><td><a class="table-link" href="/dashboard/payments/<%= payment.publicId %>">Detail →</a></td></tr><% }) %>
+    </tbody></table></div><% } %>
+  </section>
+  <aside class="panel quick-panel"><div class="panel-heading"><div><h2>Akses cepat</h2><p>Tindakan yang sering dipakai.</p></div></div>
+    <a href="/dashboard/payments/new"><span>＋</span><div><strong>Buat invoice</strong><small>Generate QR GoPay</small></div></a>
+    <a href="/dashboard/api-keys"><span>⌘</span><div><strong>Kelola API key</strong><small>Hubungkan bot atau website</small></div></a>
+    <a href="/dashboard/integration"><span>⚙</span><div><strong>Integrasi Midtrans</strong><small>Credential dan callback</small></div></a>
+    <a href="/docs"><span>?</span><div><strong>Dokumentasi API</strong><small>Contoh request lengkap</small></div></a>
+  </aside>
+</div>
+<%- include('../partials/dashboard-foot') %>

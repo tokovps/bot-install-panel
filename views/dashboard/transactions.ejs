@@ -1,0 +1,14 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Riwayat</p><h1>Semua transaksi</h1></div><a class="button" href="/dashboard/payments/new">＋ Buat pembayaran</a></div>
+<section class="panel">
+  <form class="filter-bar" method="get">
+    <input type="search" name="q" value="<%= filters.q || '' %>" placeholder="Cari order atau deskripsi">
+    <select name="status"><option value="">Semua status</option><% ['pending','paid','expired','failed','refunded'].forEach(s => { %><option value="<%= s %>" <%= filters.status === s ? 'selected' : '' %>><%= format.statusLabel(s) %></option><% }) %></select>
+    <button class="button button-ghost" type="submit">Filter</button>
+  </form>
+  <% if (!payments.length) { %><div class="empty-state"><div>⌕</div><h3>Tidak ada transaksi</h3><p>Coba ubah filter atau buat invoice baru.</p></div><% } else { %>
+  <div class="table-wrap"><table><thead><tr><th>Order</th><th>Pelanggan</th><th>Nominal</th><th>Status</th><th>Dibuat</th><th></th></tr></thead><tbody>
+    <% payments.forEach(payment => { %><tr><td><strong><%= payment.orderId %></strong><small><%= payment.description %></small></td><td><%= payment.customer?.name || '-' %><small><%= payment.customer?.email || '' %></small></td><td><%= format.rupiah(payment.amount) %></td><td><span class="status status-<%= payment.status %>"><%= format.statusLabel(payment.status) %></span></td><td><%= format.dateTime(payment.createdAt) %></td><td><a class="table-link" href="/dashboard/payments/<%= payment.publicId %>">Detail →</a></td></tr><% }) %>
+  </tbody></table></div><% } %>
+</section>
+<%- include('../partials/dashboard-foot') %>

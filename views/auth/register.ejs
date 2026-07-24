@@ -1,0 +1,17 @@
+<%- include('../partials/head') %>
+<div class="auth-shell">
+  <a class="brand auth-brand" href="/"><span class="brand-mark">M</span><span><%= brandName %></span></a>
+  <div class="auth-card">
+    <div class="auth-heading"><span class="auth-icon">＋</span><h1>Buat akun merchant</h1><p>Mulai dari sandbox, tanpa menyimpan saldo di platform.</p></div>
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <form method="post" action="/register" class="form-stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <label>Nama bisnis atau pemilik<input type="text" name="name" required maxlength="80" placeholder="Toko VPS Indonesia"></label>
+      <label>Email<input type="email" name="email" autocomplete="email" required placeholder="admin@tokovps.com"></label>
+      <label>Kata sandi<input type="password" name="password" autocomplete="new-password" minlength="8" required placeholder="Minimal 8 karakter"></label>
+      <button class="button button-block button-large" type="submit">Buat akun</button>
+    </form>
+    <p class="auth-switch">Sudah punya akun? <a href="/login">Masuk</a></p>
+  </div>
+</div>
+</body></html>

@@ -1,0 +1,23 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Invoice baru</p><h1>Buat pembayaran GoPay</h1></div><a class="button button-ghost" href="/dashboard/transactions">← Kembali</a></div>
+<div class="form-layout">
+  <section class="panel form-panel">
+    <% if (error) { %><div class="alert alert-error"><%= error %></div><% } %>
+    <% if (!merchant.isConfigured) { %><div class="alert alert-warning">Integrasi Midtrans belum lengkap. <a href="/dashboard/integration">Atur sekarang</a>.</div><% } %>
+    <form method="post" action="/dashboard/payments" class="form-stack">
+      <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+      <div class="form-section"><h2>Detail transaksi</h2><div class="form-grid">
+        <label>Order ID<input type="text" name="orderId" required maxlength="80" value="INV-<%= Date.now().toString().slice(-8) %>"></label>
+        <label>Nominal (IDR)<input type="number" name="amount" required min="1000" step="1" placeholder="50000"></label>
+      </div><label>Deskripsi<input type="text" name="description" maxlength="200" placeholder="Pembelian paket VPS"></label></div>
+      <div class="form-section"><h2>Data pelanggan <small>opsional</small></h2><div class="form-grid">
+        <label>Nama<input type="text" name="customerName" maxlength="100" placeholder="Budi"></label>
+        <label>No. HP<input type="text" name="customerPhone" maxlength="30" placeholder="08123456789"></label>
+      </div><label>Email<input type="email" name="customerEmail" maxlength="150" placeholder="budi@email.com"></label></div>
+      <div class="form-section"><h2>Callback <small>opsional</small></h2><label>Callback URL<input type="url" name="callbackUrl" maxlength="500" placeholder="https://bot-anda.com/webhook"><small>Kosongkan untuk memakai URL default di menu Integrasi.</small></label></div>
+      <button class="button button-large" type="submit" <%= !merchant.isConfigured ? 'disabled' : '' %>>Buat QR pembayaran</button>
+    </form>
+  </section>
+  <aside class="panel info-panel"><h3>Setelah dibuat</h3><div class="mini-step"><b>1</b><span>Midtrans membuat transaksi GoPay.</span></div><div class="mini-step"><b>2</b><span>QR dan deeplink ditampilkan di halaman checkout.</span></div><div class="mini-step"><b>3</b><span>Webhook memperbarui status secara otomatis.</span></div><div class="mini-step"><b>4</b><span>Callback dikirim ke sistem Anda.</span></div></aside>
+</div>
+<%- include('../partials/dashboard-foot') %>

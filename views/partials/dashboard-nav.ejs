@@ -1,0 +1,18 @@
+<aside class="sidebar" data-sidebar>
+  <a class="brand sidebar-brand" href="/dashboard"><span class="brand-mark">M</span><span><%= brandName %></span></a>
+  <nav class="side-nav">
+    <a class="<%= currentPath === '/dashboard' ? 'active' : '' %>" href="/dashboard"><span>⌂</span> Ringkasan</a>
+    <a class="<%= currentPath.startsWith('/dashboard/transactions') || currentPath.startsWith('/dashboard/payments') ? 'active' : '' %>" href="/dashboard/transactions"><span>↔</span> Transaksi</a>
+    <a class="<%= currentPath.startsWith('/dashboard/api-keys') ? 'active' : '' %>" href="/dashboard/api-keys"><span>⌘</span> API Key</a>
+    <a class="<%= currentPath.startsWith('/dashboard/integration') ? 'active' : '' %>" href="/dashboard/integration"><span>⚙</span> Integrasi</a>
+    <a href="/docs"><span>?</span> Dokumentasi</a>
+  </nav>
+  <div class="sidebar-user">
+    <div class="avatar"><%= user.name.slice(0, 1).toUpperCase() %></div>
+    <div><strong><%= user.name %></strong><small><%= user.email %></small></div>
+  </div>
+  <form method="post" action="/logout">
+    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+    <button class="logout-button" type="submit">Keluar</button>
+  </form>
+</aside>

@@ -1,0 +1,27 @@
+services:
+  - type: web
+    name: merchantflow-gopay
+    runtime: node
+    plan: free
+    region: singapore
+    buildCommand: npm install --omit=dev
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeployTrigger: commit
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: APP_URL
+        sync: false
+      - key: MONGODB_URI
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: MASTER_ENCRYPTION_KEY
+        generateValue: true
+      - key: COOKIE_SECURE
+        value: "true"
+      - key: BRAND_NAME
+        value: MerchantFlow
+      - key: ALLOW_REGISTRATION
+        value: "true"

@@ -1,0 +1,18 @@
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a class="brand" href="/" aria-label="Beranda">
+      <span class="brand-mark">M</span><span><%= brandName %></span>
+    </a>
+    <button class="menu-button" type="button" data-menu-button aria-label="Buka menu">☰</button>
+    <nav class="top-nav" data-menu>
+      <a href="/#features">Fitur</a>
+      <a href="/docs">Dokumentasi</a>
+      <% if (user) { %>
+        <a class="button button-small button-ghost" href="/dashboard">Dashboard</a>
+      <% } else { %>
+        <a href="/login">Masuk</a>
+        <a class="button button-small" href="/register">Mulai sekarang</a>
+      <% } %>
+    </nav>
+  </div>
+</header>

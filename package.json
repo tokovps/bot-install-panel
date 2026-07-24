@@ -1,0 +1,28 @@
+{
+  "name": "merchantflow-gopay",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Otomasi pembayaran GoPay merchant via Midtrans Core API, MongoDB, dan Render.",
+  "main": "src/server.js",
+  "scripts": {
+    "dev": "node --watch src/server.js",
+    "start": "node src/server.js",
+    "test": "node --test",
+    "check": "node scripts/check-syntax.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "bcryptjs": "^3.0.2",
+    "compression": "^1.8.1",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^16.5.0",
+    "ejs": "^3.1.10",
+    "express": "^5.1.0",
+    "helmet": "^8.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.16.4",
+    "zod": "^3.25.76"
+  }
+}

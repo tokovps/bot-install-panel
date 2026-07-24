@@ -1,0 +1,18 @@
+<%- include('../partials/dashboard-head') %>
+<div class="page-heading"><div><p>Detail transaksi</p><h1><%= payment.orderId %></h1></div><span class="status status-<%= payment.status %>"><%= format.statusLabel(payment.status) %></span></div>
+<% if (query.synced) { %><div class="alert alert-success">Status berhasil disinkronkan dengan Midtrans.</div><% } %>
+<% if (query.sync_error) { %><div class="alert alert-error"><%= query.sync_error %></div><% } %>
+<div class="detail-grid">
+  <section class="panel payment-summary">
+    <div class="amount-block"><small>Total pembayaran</small><strong><%= format.rupiah(payment.amount) %></strong><span><%= payment.description %></span></div>
+    <dl class="detail-list"><div><dt>Public ID</dt><dd><code><%= payment.publicId %></code></dd></div><div><dt>Status provider</dt><dd><%= payment.providerStatus %></dd></div><div><dt>Metode</dt><dd><%= payment.paymentType %></dd></div><div><dt>Transaction ID</dt><dd><%= payment.midtransTransactionId || '-' %></dd></div><div><dt>Dibuat</dt><dd><%= format.dateTime(payment.createdAt) %></dd></div><div><dt>Kedaluwarsa</dt><dd><%= format.dateTime(payment.expiresAt) %></dd></div><div><dt>Callback</dt><dd><%= payment.callbackState %> (<%= payment.callbackAttempts %> percobaan)</dd></div></dl>
+    <div class="action-row"><a class="button" target="_blank" rel="noopener" href="/pay/<%= payment.publicId %>">Buka checkout</a><form method="post" action="/dashboard/payments/<%= payment.publicId %>/sync"><input type="hidden" name="_csrf" value="<%= csrfToken %>"><button class="button button-ghost" type="submit">Sinkronkan status</button></form></div>
+  </section>
+  <aside class="panel checkout-preview-small">
+    <h2>Checkout pelanggan</h2>
+    <% if (payment.qrUrl) { %><img src="<%= payment.qrUrl %>" alt="QR pembayaran GoPay"><% } else { %><div class="qr-empty">QR tidak tersedia</div><% } %>
+    <% if (payment.deeplinkUrl) { %><a class="button button-block" href="<%= payment.deeplinkUrl %>">Buka GoPay</a><% } %>
+    <button class="copy-button" type="button" data-copy="<%= appUrl %>/pay/<%= payment.publicId %>">Salin link pembayaran</button>
+  </aside>
+</div>
+<%- include('../partials/dashboard-foot') %>
